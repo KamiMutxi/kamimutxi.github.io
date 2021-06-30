@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ShapeDiver Viewer v2</title>
+
+    <!-- ShapeDiver Viewer -->
+    <script defer src="https://viewer.shapediver.com/v2/2.13.0/sdv.concat.min.js"></script>
+    <link rel='stylesheet' type='text/css' href='https://viewer.shapediver.com/v2/2.13.0/sdv.css'>
+
+</head>
+<body>
+
+  <!-- ShapeDiver Viewer Container -->
+  <div id='sdv-container' style='position: absolute; width: 100%; height: 100%; left:0%; top:0%' >
+  </div>
+
+  <script>
+    // ShapeDiver Viewer Initialisation
+    var initSdvApp = function(/*event*/) {
+      // settings can be defined here or as attributes of the viewport container
+      // settings defined here take precedence
+      let settings = {
+        ticket: 'TICKET_FOR_YOUR_MODEL',
+        modelViewUrl: 'eu-central-1', // or 'us-east-1' or address of your own ShapeDiver model view server
+        container: document.getElementById('sdv-container'),
+      };
+      // provide global access to the ShapeDiver Viewer API returned by the constructor
+      window.api = new SDVApp.ParametricViewer(settings);
+    };
+    // there is a slight chance that loading has been completed already
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSdvApp, false);
+    } else {
+      initSdvApp();
+    }
+  </script>
+
+</body>
+</html>
