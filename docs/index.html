@@ -1,57 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="google" value="notranslate">
+    <title>ShapeDiver Viewer v2</title>
 
-    <title>ShapeDiver Viewer v2 - iframe test</title>
-
-    <!-- ShapeDiver Viewer API reflector, sets the global variable SDVReflector -->
-    <script src="https://viewer.shapediver.com/v2/2.28.0/sdv_reflector.min.js"></script>
+    <!-- ShapeDiver Viewer -->
+    <script defer src="https://viewer.shapediver.com/v2/2.28.0/sdv.concat.min.js"></script>
+    <link rel='stylesheet' type='text/css' href='https://viewer.shapediver.com/v2/2.28.0/sdv.css'>
 
 </head>
 <body>
 
-  <!-- Uncomment this script if you want to see messages received from the iframe in the browser console -->
- 
-  <script>
-    window.addEventListener('message', console.log, false);
-  </script>
- 
+  <!-- ShapeDiver Viewer Container -->
+  <div id='sdv-container' style='position: absolute; width: 100%; height: 100%; left:0%; top:0%' >
+  </div>
 
-  <!-- Uncomment this script if you want to trigger some actions once the ShapeDiver Viewer has been loaded -->
-  
   <script>
-    window.addEventListener('message', function(event) {
-      if ( event.data && typeof event.data === 'object' ) {
-        if ( event.data.type === 'sdv-ViewerLoaded' ) {
-          console.log('ShapeDiver Viewer initialisation finished', event.data);
-          sdapi = SDVReflector.get('api');
-        } else if ( event.data.type === 'sdv-CommPluginLoaded' ) {
-          console.log('ShapeDiver CommPlugin successfully loaded', event.data);
-          sdapi.parameters.getAsync().then( function(result) {
-            console.log('Available model parameters', result.data);
-          });
-        }
-      }
-    }, false);
+    // ShapeDiver Viewer Initialisation
+    var initSdvApp = function(/*event*/) {
+      // settings can be defined here or as attributes of the viewport container
+      // settings defined here take precedence
+      let settings = {
+        ticket: 'f214f0eb8d9594cde23099eee61650e39700be0b6feb6b9baa484d443987204e87457cbac950af5f93240175302a2ae5a66baa87f7705bcc1ccf450a1ee061a3359e14d70f7b9db69c8c0c111467882eaff37cbe478bf019e110a37fbd7d534f05ad3df7fab2bd328f4083acbdc355356a50b4821ddb271195b54f3aff9ad45b-80145dc1b06b8e7606cddb1b483f3ace',
+        modelViewUrl: 'eu-central-1', // or 'us-east-1' or address of your own ShapeDiver model view server
+        container: document.getElementById('sdv-container'),
+      };
+      // provide global access to the ShapeDiver Viewer API returned by the constructor
+      window.api = new SDVApp.ParametricViewer(settings);
+    };
+    // there is a slight chance that loading has been completed already
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSdvApp, false);
+    } else {
+      initSdvApp();
+    }
   </script>
- 
-
-  <!-- Refer to the settings of the SDVApp.ParametricViewer constructor to find out which query string parameters can be used -->
-  <iframe id='sdv-iframe'
-    width="640" height="480"
-    src="https://viewer.shapediver.com/v2/2.28.0/iframe/remote.html?modelViewUrl=eu-central-1&ticket=e87a9ac59f3c08235f79e90fa66ecaa3ca619ae9a380062fca42e75e6360272551badbca303b95f2a99eca170270a3fd6eb31db71f92c06849bcc492dc52f447c9ed1a8769f4eb42a1676e062f737a1aecb5cc0bb0e38572ecaae4d4c30a4609e4c35c6d79a87f4af735da1a01a66b27e6463e2d272a7f9a5a6fb4ccabf15df0-979e6c66e29e8c9b1e447c178905dd4c"
-    referrerpolicy="origin"
-    allowfullscreen
-    scrolling="no"
-    style="overflow-x: hidden; overflow-y: hidden; border-width: 0;"
-  >
-    <p>Your browser does not support iframes.</p>
-  </iframe>
 
 </body>
 </html>
